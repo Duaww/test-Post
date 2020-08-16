@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Item</title>
+</head>
+<body>
+    <input id="input" type="text">
+    <button id="add-button">Add</button>
+    <ul  id="todo-list">
+        <!-- <li>take shower</li>
+        <li>go to bed</li> -->
+    </ul>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        var url = 'http://localhost:9082/todos';
+        axios.get(url).then(function(response) 
+        {
+            var items =response.data;
+            render(items);
+        })
+        var addButton = document.getElementById('add-button');
+        addButton.addEventListener('click', addItem);
+        //addButton.addEventListener('click', returnHome);
+
+        function returnHome()
+        {
+            window.location.href = "/POST/index.html";
+        }
+        function addItem()
+        {
+            var input = document.getElementById('input');
+            var newItem = {content : input.value};
+
+            axios.post(url, newItem).then(function(response){
+                console.log('Saved');
+            })
+            window.location.href = "http://127.0.0.1:5500/POST/";
+            //window.location.href = "/POST/";
+            input.value = '';
+        }
+
+
+        function render(items)
+        {
+            var htmlList = document.getElementById('todo-list');
+            var content =  items.map(function (item)
+            {
+                return '<li>' + item.content + '</li>';
+            });
+            htmlList.innerHTML = content.join('');
+        }
+        //render();
+        
+    </script>
+</body>
+</html>
